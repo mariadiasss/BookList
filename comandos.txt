@@ -1,0 +1,18 @@
+git config --global user.name mariadiasss
+git config --global user.email mariacoelhodias94@gmail.com
+
+Apenas p criar o projeto:
+npx create-expo-app@latest BooksList --template blank
+
+Continuar a trabalhar:
+cd BooksList
+npm i
+
+Rodar o projeto:
+npx expo start --localhost --android
+
+Rodar na web:
+npx expo install react-dom react-native-web @expo/metro-runtime
+
+Pacote Expo Rounter:
+npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
