@@ -109,7 +109,7 @@ export default function BookList() {
   return (
     <SafeAreaView style={{ flex: 1}}>
       <ImageBackground 
-        source={require('../assets/background.jpg')}
+        source={require('../assets/background.png')}
         style={{flex: 1, justifyContent: 'flex-start'}}
         resizeMode='repeat'
       >
