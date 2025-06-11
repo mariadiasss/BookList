@@ -1,86 +1,86 @@
 import React, { useEffect, useState } from 'react'
 import { Alert, FlatList, ImageBackground, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import ItemList from '../components/ItemList';
+import BookListItem from '../components/ItemList';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Home() {
+export default function BookList() {
   const [textInput, setTextInput] = useState('');
-  const [items, setItems] = useState([]);
+  const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    getItemsFromDevice();
+    getBooksFromDevice();
   }, []);
 
   useEffect(() => {
-    saveItemToDevice();
-  }, [items]);
+    saveBooksToDevice();
+  }, [books]);
 
-  const getItemsFromDevice = async () => {
+  const getBooksFromDevice = async () => {
     try {
-      const itemsMemory = await AsyncStorage.getItem('BooksList');
-      if (itemsMemory != null) {
-        setItems(JSON.parse(itemsMemory));
+      const booksMemory = await AsyncStorage.getItem('bookList');
+      if (booksMemory != null) {
+        setBooks(JSON.parse(booksMemory));
       }
     } catch (error) {
       console.log(`Erro: ${error}`)
     }
   }
 
-  const saveItemToDevice = async () => {
+  const saveBooksToDevice = async () => {
     try {
-      const itemsJson = JSON.stringify(items);
-      await AsyncStorage.setItem('BooksList', itemsJson);
+      const booksJson = JSON.stringify(books);
+      await AsyncStorage.setItem('bookList', booksJson);
     } catch (error) {
       console.log(`Erro: ${error}`)
     }
   }
 
-  const addItem = () => {
+  const addBook = () => {
     if (textInput == '') {
       Alert.alert(
         'Ocorreu um problema :(',
-        'Por favor, informe o nome dos livros!'
+        'Por favor, informe o título do livro!'
       );
     } else {
-      const newItem = {
+      const newBook = {
         id: Date.now().toString(),
         name: textInput,
-        bought: false
+        read: false
       }
-      setItems([...items, newItem]);
+      setBooks([...books, newBook]);
       setTextInput('');
     }
   }
 
-  const markItemBought = itemId => {
-    const newItems = items.map((item) => {
-      if (item.id == itemId) {
-        return { ...item, bought: true}
+  const markBookRead = bookId => {
+    const newBooks = books.map((book) => {
+      if (book.id == bookId) {
+        return { ...book, read: true}
       }
-      return item;
+      return book;
     });
-    setItems(newItems);
+    setBooks(newBooks);
   }
 
-  const unmarkItemBought = itemId => {
-    const newItems = items.map((item) => {
-      if (item.id == itemId) {
-        return { ...item, bought: false}
+  const unmarkBookRead = bookId => {
+    const newBooks = books.map((book) => {
+      if (book.id == bookId) {
+        return { ...book, read: false}
       }
-      return item;
+      return book;
     });
-    setItems(newItems);
+    setBooks(newBooks);
   }
 
-  const removeItem = itemId => {
+  const removeBook = bookId => {
     Alert.alert(
-      'Excluir Livro?', 'Confirma a exclusão deste Livro?',
+      'Excluir Livro?', 'Confirma a exclusão deste livro?',
       [
         {
           text: 'Sim', onPress: () => {
-            const newItems = items.filter(item => item.id != itemId)
-            setItems(newItems);
+            const newBooks = books.filter(book => book.id != bookId)
+            setBooks(newBooks);
           }
         },
         {
@@ -92,11 +92,11 @@ export default function Home() {
 
   const removeAll = () => {
     Alert.alert(
-      "Limpar Lista?", "Confirma a exclusão de todos os Livros",
+      "Limpar Lista?", "Confirma a exclusão de todos os livros?",
       [
         {
           text: 'Sim',
-          onPress: () => { setItems([]) }
+          onPress: () => { setBooks([]) }
         },
         {
           text: 'Cancelar',
@@ -114,20 +114,20 @@ export default function Home() {
         resizeMode='repeat'
       >
         <View style={styles.header}>
-          <Text style={styles.title}>Lista de Produtos</Text>
+          <Text style={styles.title}>Lista de Livros</Text>
           <Ionicons name="trash" size={32} color="#fff" onPress={removeAll} />
         </View>
 
         <FlatList
           contentContainerStyle={{ padding: 20, paddingBottom: 100, color:'#fff'}}
-          data={items}
+          data={books}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) =>
-            <ItemList
+            <BookListItem
               item={item}
-              markItem={markItemBought}
-              unmarkItem={unmarkItemBought}
-              removeItem={removeItem}
+              markItem={markBookRead}
+              unmarkItem={unmarkBookRead}
+              removeItem={removeBook}
             />
           }
         />
@@ -143,7 +143,7 @@ export default function Home() {
               onChangeText={(text) => setTextInput(text)}
             />
           </View>
-          <TouchableOpacity style={styles.iconContainer} onPress={addItem}>
+          <TouchableOpacity style={styles.iconContainer} onPress={addBook}>
             <Ionicons name='add' size={36} color='#fff' />
           </TouchableOpacity>
         </View>
@@ -200,3 +200,4 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 })
+
