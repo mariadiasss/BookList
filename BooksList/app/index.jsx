@@ -13,13 +13,13 @@ export default function Welcome() {
       </View>
       <View style={styles.content}>
         <Text style={styles.title}>
-          Gallo Shopping List
+          BookList
         </Text>
         <Text style={styles.text}>
-         Organize sua coleção de livros e acompanhe seu progresso de leitura!
+          Monte sua lista de livros e acompanhe o que você já leu ou quer ler!
         </Text>
         <Link style={styles.button} href={"/home"}>
-          <Text style={styles.buttonText}>Acessar sua Biblioteca</Text>
+          <Text style={styles.buttonText}>Acessar</Text>
         </Link>        
 
       </View>
@@ -79,3 +79,4 @@ const styles = StyleSheet.create({
     fontWeight:'bold'
   }
 });
+
